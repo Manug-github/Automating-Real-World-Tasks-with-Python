@@ -1,23 +1,19 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
-import os
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.platypus import Paragraph, Spacer, Table, Image
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 
-
-def generate_report(folder, title, lines):
-    c = canvas.Canvas("test.pdf")
-    c.setFont('Helvetica-Bold', 14)
-    c.drawString(100, 750, title)
-    c.setFont('Helvetica', 10)
-    textobject = c.beginText(100, 700)
-    for line in lines:
-        textobject.textLine(line.strip())
-    c.drawText(textobject)
-    c.save()
-
-
-"""folder = "test.pdf"
-title = "casa"
-summary = ["perro","","gato"]
-generate_pdf(folder, title, summary)"""
+def generate_report(filename, title, additional_info):
+    styles = getSampleStyleSheet()
+    report = SimpleDocTemplate(filename)
+    report_title = Paragraph(title, styles["h1"])
+    report_info = Paragraph(additional_info, styles["BodyText"])
+    empty_line = Spacer(1,20)
+    report.build([report_title, empty_line, report_info])
+# filename= "test.pdf"
+# title = "Sales summary for last month"
+# summary = ["perro","gato"]
+# additional_info =  "<br/>".join(summary)
+# generate(filename, title, additional_info)
